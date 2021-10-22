@@ -11,7 +11,12 @@ If you haven't run the project before, navigate to the `backend` directory in yo
 * `pip install pipenv`
 * `pipenv install`
 
-If you're using VSCode, copy the Virtualenv location that was created by `pipenv install` (it will be displayed in the terminal output),  click on the bottom left of your VSCode project window (it will potentially say "Select Interpreter"), and past it in to the prompt. This will allow you to get type hints for this Python project.
+If you're using VSCode, copy the Virtualenv location that was created by `pipenv install` (it will be displayed in the terminal output),  click on the bottom left of your VSCode project window (it will potentially say "Select Interpreter"), and paste it in to the prompt that appears. This will allow you to get type hints for this Python project.
+
+The server dynamically loads db configuration values from a `.env` file. **You will need to create a `.env` file in the `backend` directory, copy the values from `.env.example`, and fill in the proper value for each key.**
+
+ Using a `.env` file is a best practice for accessing sensitive information like usernames and passwords for databases in programs. 
+
 ### Subsequent Runs
 
 Navigate to the `backend` directory in your terminal and run:
