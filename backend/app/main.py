@@ -15,10 +15,10 @@ connection = engine.connect()
 metadata = db.MetaData()
 activity = db.Table("Activity", metadata, autoload=True, autoload_with=engine)
 
-app = FastAPI()
-
 # API documentation: https://fastapi.tiangolo.com
 # ORM documentation: https://sqlmodel.tiangolo.com
+
+app = FastAPI()
 
 @app.get("/")
 def read_root():
@@ -27,9 +27,9 @@ def read_root():
 @app.get("/activities")
 def read_all_activities():
     query = activity.select()
-    result = connection.execute(query)
-    results = [res._asdict() for res in result]
-    return results
+    query_result = connection.execute(query)
+    activities = [res._asdict() for res in query_result]
+    return activities
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
