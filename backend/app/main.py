@@ -16,7 +16,7 @@ metadata = db.MetaData()
 activity = db.Table("Activity", metadata, autoload=True, autoload_with=engine)
 
 # API documentation: https://fastapi.tiangolo.com
-# ORM documentation: https://sqlmodel.tiangolo.com
+# SQLAlchemy (ORM) tutorial: https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 
 app = FastAPI()
 
