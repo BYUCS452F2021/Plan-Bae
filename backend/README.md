@@ -11,7 +11,7 @@ If you haven't run the project before, navigate to the `backend` directory in yo
 * `pip install pipenv`
 * `pipenv install`
 
-If you're using VSCode, copy the Virtualenv location that was created by `pipenv install`,  click on the bottom left of your VSCode project window, and past it in to the prompt. This will allow you to get type hints for this Python project.
+If you're using VSCode, copy the Virtualenv location that was created by `pipenv install` (it will be displayed in the terminal output),  click on the bottom left of your VSCode project window (it will potentially say "Select Interpreter"), and past it in to the prompt. This will allow you to get type hints for this Python project.
 ### Subsequent Runs
 
 Navigate to the `backend` directory in your terminal and run:

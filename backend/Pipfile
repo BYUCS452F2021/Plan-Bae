@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
+sqlalchemy = "*"
+mysql-connector-python = "*"
 
 [dev-packages]
 
