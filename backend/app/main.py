@@ -3,8 +3,8 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
-from . import crud, models, schemas
-from .database import SessionLocal, engine
+import crud, models, schemas
+from database import SessionLocal, engine
 
 # API documentation: https://fastapi.tiangolo.com
 # SQLAlchemy (ORM) tutorial: https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
@@ -33,13 +33,13 @@ def read_activity(activity_id: int, db: Session = Depends(get_db)):
     return activity
 
 # Get all users
-@app.get("/users", response_model=List[schemas.User])
+@app.get("/users", response_model=List[schemas.UserBase])
 def read_all_users(db: Session = Depends(get_db)):
     users = crud.get_users(db)
     return users
 
 # Get specific user
-@app.get("/users/{user_id}", response_model=schemas.User)
+@app.get("/users/{user_id}", response_model=schemas.UserBase)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     user = crud.get_user(db, user_id)
     return user

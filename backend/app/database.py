@@ -1,5 +1,7 @@
 import os
-import sqlalchemy as db
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 hostname = os.environ["DB_HOSTNAME"]
 port = os.environ["DB_PORT"]
@@ -8,7 +10,7 @@ password = os.environ["DB_PASSWORD"]
 database_name = os.environ["DB_NAME"]
 
 DATABASE_URL = f"mysql+pymysql://{username}:{password}@{hostname}:{port}/{database_name}"
-engine = db.create_engine(DATABASE_URL)
-SessionLocal = db.orm.sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = db.ext.declarative.declarative_base()
+Base = declarative_base()

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
+from datetime import datetime
 
-
-class Activity(Base):
+class Activity(BaseModel):
     activity_id: int
     name: str
     tags: str
@@ -13,26 +13,35 @@ class Activity(Base):
     latitude: float
     longitude: float
 
+    class Config:
+        orm_mode = True
 
-class Date(Base):
+
+class Date(BaseModel):
     date_id: int 
     user_id: int 
-    time: DateTime
+    time: datetime
+
+    class Config:
+        orm_mode = True
 
 
 class UserBase(BaseModel):
     user_id: str
     username: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserCreate(UserBase):
     password: str
 
 
-class User(UserBase):
-    user_id: int
-    username: str 
-
-
-
-class DateActivity(Base):
+class DateActivity(BaseModel):
     dateactivity_id: int
     date_id: int
     activity_id: int
+
+    class Config:
+        orm_mode = True

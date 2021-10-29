@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from . import models
+import models
 
 def get_activities(db: Session):
     return db.query(models.Activity).all()
