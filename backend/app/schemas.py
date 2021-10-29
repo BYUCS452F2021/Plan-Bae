@@ -1,33 +1,46 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class Activity(BaseModel):
-    activity_id: int
+class ActivityBase(BaseModel):
     name: str
     tags: str
-    active: str
-    description: str
+    active_level: int
+    activity_description: str
     url: str
-    min_cost: int
+    cost: int
     duration: int
-    latitude: float
-    longitude: float
+    latitude: str
+    longitude: str
+
+
+class ActivityCreate(ActivityBase):
+    pass
+
+
+class Activity(ActivityBase):
+    activity_id: int
 
     class Config:
         orm_mode = True
 
 
-class Date(BaseModel):
-    date_id: int 
+class DateBase(BaseModel):
     user_id: int 
     time: datetime
+
+
+class DateCreate(DateBase):
+    pass
+
+
+class Date(DateBase):
+    date_id: int
 
     class Config:
         orm_mode = True
 
 
 class UserBase(BaseModel):
-    user_id: str
     username: str
 
     class Config:
@@ -38,10 +51,21 @@ class UserCreate(UserBase):
     password: str
 
 
-class DateActivity(BaseModel):
-    dateactivity_id: int
+class User(UserBase):
+    user_id: str
+
+
+class DateActivityBase(BaseModel):
     date_id: int
     activity_id: int
+
+
+class DateActivityCreate(DateActivityBase):
+    pass
+
+
+class DateActivity(DateActivityBase):
+    dateactivity_id: int
 
     class Config:
         orm_mode = True
