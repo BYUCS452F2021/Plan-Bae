@@ -27,73 +27,55 @@ def read_all_activities(db: Session = Depends(get_db)):
     return activities
 
 # Get specific activity
-@app.get("/activities/{activity_id}")
-def read_activity(activity_id: int):
-    query = activity.select(activity.c.activity_id == activity_id)
-    query_result = connection.execute(query)
-    activities = [res._asdict() for res in query_result]
-    return activities[0] if activities else None
+@app.get("/activities/{activity_id}", response_model=schemas.Activity)
+def read_activity(activity_id: int, db: Session = Depends(get_db)):
+    activity = crud.get_activity(db, activity_id)
+    return activity
 
 # Get all users
-@app.get("/users")
-def read_all_users():
-    query = user.select()
-    query_result = connection.execute(query)
-    users = [res._asdict() for res in query_result]
+@app.get("/users", response_model=List[schemas.User])
+def read_all_users(db: Session = Depends(get_db)):
+    users = crud.get_users(db)
     return users
 
 # Get specific user
-@app.get("/users/{user_id}")
-def read_user(user_id: int):
-    query = user.select(user.c.user_id == user_id)
-    query_result = connection.execute(query)
-    users = [res._asdict() for res in query_result]
-    return users[0] if users else None
+@app.get("/users/{user_id}", response_model=schemas.User)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    user = crud.get_user(db, user_id)
+    return user
 
 # Get all dates
-@app.get("/dates")
-def read_all_dates():
-    query = date.select()
-    query_result = connection.execute(query)
-    dates = [res._asdict() for res in query_result]
+@app.get("/dates", response_model=List[schemas.Date])
+def read_all_dates(db: Session = Depends(get_db)):
+    dates = crud.get_dates(db)
     return dates
 
 # Get specific date
-@app.get("/dates/{date_id}")
-def read_date(date_id: int):
-    query = date.select(date.c.date_id == date_id)
-    query_result = connection.execute(query)
-    dates = [res._asdict() for res in query_result]
-    return dates[0] if dates else None
+@app.get("/dates/{date_id}", response_model=schemas.Date)
+def read_date(date_id: int, db: Session = Depends(get_db)):
+    date = crud.get_date(db, date_id)
+    return date
 
 # Get all dates for a particular user
-@app.get("/dates/user/{user_id}")
-def read_user_dates(user_id: int):
-    query = date.select(date.c.user_id == user_id)
-    query_result = connection.execute(query)
-    dates = [res._asdict() for res in query_result]
+@app.get("/dates/user/{user_id}", response_model=List[schemas.Date])
+def read_user_dates(user_id: int, db: Session = Depends(get_db)):
+    dates = crud.get_user_dates(db, user_id)
     return dates
 
 # Get all date activities
-@app.get("/dateactivities")
-def read_all_dateactivities():
-    query = dateactivity.select()
-    query_result = connection.execute(query)
-    dateactivities = [res._asdict() for res in query_result]
+@app.get("/dateactivities", response_model=List[schemas.DateActivity])
+def read_all_dateactivities(db: Session = Depends(get_db)):
+    dateactivities = crud.get_dateactivities(db)
     return dateactivities
 
 # Get specific date activity
-@app.get("/dateactivities/{dateactivity_id}")
-def read_dateactivity(dateactivity_id: int):
-    query = dateactivity.select(dateactivity.c.dateactivity_id == dateactivity_id)
-    query_result = connection.execute(query)
-    dateactivities = [res._asdict() for res in query_result]
-    return dateactivities[0] if dateactivities else None
+@app.get("/dateactivities/{dateactivity_id}", response_model=schemas.DateActivity)
+def read_dateactivity(dateactivity_id: int, db: Session = Depends(get_db)):
+    dateactivity = crud.get_dateactivity(db, dateactivity_id)
+    return dateactivity
 
 # Get all date activities for a particular date
-@app.get("/dateactivities/date/{date_id}")
-def read_date_dateactivities(date_id: int):
-    query = dateactivity.select(dateactivity.c.date_id == date_id)
-    query_result = connection.execute(query)
-    dateactivities = [res._asdict() for res in query_result]
+@app.get("/dateactivities/date/{date_id}", response_model=List[schemas.DateActivity])
+def read_date_dateactivities(date_id: int, db: Session = Depends(get_db)):
+    dateactivities = crud.get_date_dateactivities(db, date_id)
     return dateactivities
