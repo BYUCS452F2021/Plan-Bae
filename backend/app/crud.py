@@ -39,6 +39,7 @@ def get_dateactivity(db: Session, dateactivity_id: int):
 def get_date_dateactivities(db: Session, date_id: int):
     return db.query(models.DateActivity).filter(models.DateActivity.date_id == date_id).all()
 
+
 def create_activity(db: Session, activity: schemas.ActivityCreate):
     db_activity = models.Activity(**activity.dict())
     db.add(db_activity)
@@ -78,3 +79,38 @@ def create_dateactivity(db: Session, dateactivity: schemas.DateActivityCreate):
 
 def create_dateactivities(db: Session, dateactivities: List[schemas.DateActivityCreate]):
     return [create_dateactivity(db, dateactivity) for dateactivity in dateactivities]
+
+
+def delete_activity(db: Session, activity_id: int):
+    records_removed = db.query(models.Activity).filter(models.Activity.activity_id == activity_id).delete()
+    db.commit()
+    return records_removed
+
+def delete_activities(db: Session, activity_ids: List[int]):
+    return sum([delete_activity(db, activity_id) for activity_id in activity_ids])
+
+def delete_user(db: Session, user_id: int):
+    delete_dates(db, get_user_dates(db, user_id))
+    records_removed = db.query(models.User).filter(models.User.user_id == user_id).delete()
+    db.commit()
+    return records_removed
+
+def delete_users(db: Session, user_ids: List[int]):
+    return sum([delete_user(db, user_id) for user_id in user_ids])
+
+def delete_date(db: Session, date_id: int):
+    delete_dateactivities(db, get_date_dateactivities(db, date_id))
+    records_removed = db.query(models.Date).filter(models.Date.date_id == date_id).delete()
+    db.commit()
+    return records_removed
+
+def delete_dates(db: Session, date_ids: List[int]):
+    return sum([delete_date(db, date_id) for date_id in date_ids])
+
+def delete_dateactivity(db: Session, dateactivity_id: int):
+    records_removed = db.query(models.DateActivity).filter(models.DateActivity.dateactivity_id == dateactivity_id).delete()
+    db.commit()
+    return records_removed
+
+def delete_dateactivities(db: Session, dateactivity_ids: List[int]):
+    return sum([delete_dateactivity(db, dateactivity_id) for dateactivity_id in dateactivity_ids])
