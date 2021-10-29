@@ -154,41 +154,41 @@ Delete Endpoints
 '''
 
 # Delete an activity
-@app.delete("/activity/", response_model=int, tags=["Activities"])
+@app.delete("/activity/", response_model=schemas.DeleteResponse, tags=["Activities"])
 def delete_activity(activity_id: int, db: Session = Depends(get_db)):
     return crud.delete_activity(db, activity_id)
 
 # Delete activities
-@app.delete("/activities/", response_model=int, tags=["Activities"])
+@app.delete("/activities/", response_model=schemas.DeleteResponse, tags=["Activities"])
 def delete_activities(activity_ids: List[int], db: Session = Depends(get_db)):
     return crud.delete_activities(db, activity_ids)
 
 # Delete a user
-@app.delete("/user/", response_model=int, tags=["Users"])
+@app.delete("/user/", response_model=schemas.DeleteResponse, tags=["Users"])
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     return crud.delete_user(db, user_id)
 
 # Delete users
-@app.delete("/users/", response_model=int, tags=["Users"])
+@app.delete("/users/", response_model=schemas.DeleteResponse, tags=["Users"])
 def delete_users(user_ids: List[int], db: Session = Depends(get_db)):
     return crud.delete_users(db, user_ids)
 
 # Delete a date
-@app.delete("/date/", response_model=int, tags=["Dates"])
+@app.delete("/date/", response_model=schemas.DeleteResponse, tags=["Dates"])
 def delete_date(date_id: int, db: Session = Depends(get_db)):
     return crud.delete_date(date_id)
 
 # Delete dates
-@app.delete("/dates/", response_model=int, tags=["Dates"])
+@app.delete("/dates/", response_model=schemas.DeleteResponse, tags=["Dates"])
 def delete_dates(date_ids: List[int], db: Session = Depends(get_db)):
     return crud.delete_dates(db, date_ids)
 
 # Delete a dateactivity
-@app.delete("/dateactivity/", response_model=int, tags=["DateActivities"])
+@app.delete("/dateactivity/", response_model=schemas.DeleteResponse, tags=["DateActivities"])
 def delete_dateactivity(dateactivity_id: int, db: Session = Depends(get_db)):
     return crud.delete_dateactivity(dateactivity_id)
 
 # Delete dateactivities
-@app.delete("/dateactivities/", response_model=int, tags=["DateActivities"])
+@app.delete("/dateactivities/", response_model=schemas.DeleteResponse, tags=["DateActivities"])
 def delete_dateactivities(dateactivity_ids: List[int], db: Session = Depends(get_db)):
     return crud.delete_dateactivities(db, dateactivity_ids)
