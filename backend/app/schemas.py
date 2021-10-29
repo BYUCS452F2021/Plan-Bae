@@ -69,3 +69,16 @@ class DateActivity(DateActivityBase):
 
     class Config:
         orm_mode = True
+
+
+class DeleteResponse(BaseModel):
+    activities: int = 0
+    users: int = 0
+    dates: int = 0
+    dateactivities: int = 0
+    
+    def update(self, other):
+        self.activities += other.activities
+        self.users += other.users
+        self.dates += other.dates
+        self.dateactivities += other.dateactivities

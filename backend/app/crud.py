@@ -95,35 +95,51 @@ Delete helpers
 '''
 
 def delete_activity(db: Session, activity_id: int):
-    records_removed = db.query(models.Activity).filter(models.Activity.activity_id == activity_id).delete()
+    res = schemas.DeleteResponse()
+    res.activities += db.query(models.Activity).filter(models.Activity.activity_id == activity_id).delete()
     db.commit()
-    return records_removed
+    return res
 
 def delete_activities(db: Session, activity_ids: List[int]):
-    return sum([delete_activity(db, activity_id) for activity_id in activity_ids])
+    res = schemas.DeleteResponse()
+    for activity_id in activity_ids:
+        res.update(delete_activity(db, activity_id))
+    return res
 
 def delete_user(db: Session, user_id: int):
-    delete_dates(db, [date.date_id for date in get_user_dates(db, user_id)])
-    records_removed = db.query(models.User).filter(models.User.user_id == user_id).delete()
+    res = schemas.DeleteResponse()
+    res.update(delete_dates(db, [date.date_id for date in get_user_dates(db, user_id)]))
+    res.users += db.query(models.User).filter(models.User.user_id == user_id).delete()
     db.commit()
-    return records_removed
+    return res
 
 def delete_users(db: Session, user_ids: List[int]):
-    return sum([delete_user(db, user_id) for user_id in user_ids])
+    res = schemas.DeleteResponse()
+    for user_id in user_ids:
+        res.update(delete_user(db, user_id))
+    return res
 
 def delete_date(db: Session, date_id: int):
-    delete_dateactivities(db, [dateactivity.dateactivity_id for dateactivity in get_date_dateactivities(db, date_id)])
-    records_removed = db.query(models.Date).filter(models.Date.date_id == date_id).delete()
+    res = schemas.DeleteResponse()
+    res.update(delete_dateactivities(db, [dateactivity.dateactivity_id for dateactivity in get_date_dateactivities(db, date_id)]))
+    res.date += db.query(models.Date).filter(models.Date.date_id == date_id).delete()
     db.commit()
-    return records_removed
+    return res
 
 def delete_dates(db: Session, date_ids: List[int]):
-    return sum([delete_date(db, date_id) for date_id in date_ids])
+    res = schemas.DeleteResponse()
+    for date_id in date_ids:
+        res.update(delete_date(db, date_id))
+    return res
 
 def delete_dateactivity(db: Session, dateactivity_id: int):
-    records_removed = db.query(models.DateActivity).filter(models.DateActivity.dateactivity_id == dateactivity_id).delete()
+    res = schemas.DeleteResponse()
+    res.dateactivities += db.query(models.DateActivity).filter(models.DateActivity.dateactivity_id == dateactivity_id).delete()
     db.commit()
-    return records_removed
+    return res
 
 def delete_dateactivities(db: Session, dateactivity_ids: List[int]):
-    return sum([delete_dateactivity(db, dateactivity_id) for dateactivity_id in dateactivity_ids])
+    res = schemas.DeleteResponse()
+    for dateactivity_id in dateactivity_ids:
+        res.update(delete_dateactivity(db, dateactivity_id))
+    return res
