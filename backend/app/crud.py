@@ -3,6 +3,11 @@ from typing import List
 
 import models, schemas
 
+
+'''
+Get helpers
+'''
+
 def get_activities(db: Session):
     return db.query(models.Activity).all()
 
@@ -39,6 +44,10 @@ def get_dateactivity(db: Session, dateactivity_id: int):
 def get_date_dateactivities(db: Session, date_id: int):
     return db.query(models.DateActivity).filter(models.DateActivity.date_id == date_id).all()
 
+
+'''
+Post helpers
+'''
 
 def create_activity(db: Session, activity: schemas.ActivityCreate):
     db_activity = models.Activity(**activity.dict())
@@ -81,6 +90,10 @@ def create_dateactivities(db: Session, dateactivities: List[schemas.DateActivity
     return [create_dateactivity(db, dateactivity) for dateactivity in dateactivities]
 
 
+'''
+Delete helpers
+'''
+
 def delete_activity(db: Session, activity_id: int):
     records_removed = db.query(models.Activity).filter(models.Activity.activity_id == activity_id).delete()
     db.commit()
@@ -90,7 +103,7 @@ def delete_activities(db: Session, activity_ids: List[int]):
     return sum([delete_activity(db, activity_id) for activity_id in activity_ids])
 
 def delete_user(db: Session, user_id: int):
-    delete_dates(db, get_user_dates(db, user_id))
+    delete_dates(db, [date.date_id for date in get_user_dates(db, user_id)])
     records_removed = db.query(models.User).filter(models.User.user_id == user_id).delete()
     db.commit()
     return records_removed
@@ -99,7 +112,7 @@ def delete_users(db: Session, user_ids: List[int]):
     return sum([delete_user(db, user_id) for user_id in user_ids])
 
 def delete_date(db: Session, date_id: int):
-    delete_dateactivities(db, get_date_dateactivities(db, date_id))
+    delete_dateactivities(db, [dateactivity.dateactivity_id for dateactivity in get_date_dateactivities(db, date_id)])
     records_removed = db.query(models.Date).filter(models.Date.date_id == date_id).delete()
     db.commit()
     return records_removed
