@@ -1,4 +1,4 @@
-from pydantic import Base
+from pydantic import BaseModel
 
 
 class Activity(Base):
