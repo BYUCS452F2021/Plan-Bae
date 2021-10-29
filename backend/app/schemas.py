@@ -19,10 +19,16 @@ class Date(Base):
     user_id: int 
     time: DateTime
 
-class User(Base):
+
+class UserBase(BaseModel):
+    user_id: str
+    username: str
+    password: str
+
+
+class User(UserBase):
     user_id: int
     username: str 
-    password: str
 
 
 
