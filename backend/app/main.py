@@ -1,38 +1,29 @@
 import os
-from typing import Optional
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.orm import Session
+from typing import List, Optional
 
-from fastapi import FastAPI
-import sqlalchemy as db
-
-hostname = os.environ["DB_HOSTNAME"]
-port = os.environ["DB_PORT"]
-username = os.environ["DB_USERNAME"]
-password = os.environ["DB_PASSWORD"]
-database_name = os.environ["DB_NAME"]
-
-engine = db.create_engine(f"mysql+pymysql://{username}:{password}@{hostname}:{port}/{database_name}")
-connection = engine.connect()
-metadata = db.MetaData()
-activity = db.Table("Activity", metadata, autoload=True, autoload_with=engine)
-user = db.Table("User", metadata, autoload=True, autoload_with=engine)
-date = db.Table("Date", metadata, autoload=True, autoload_with=engine)
-dateactivity = db.Table("DateActivity", metadata, autoload=True, autoload_with=engine)
+from . import crud, models, schemas
+from .database import SessionLocal, engine
 
 # API documentation: https://fastapi.tiangolo.com
 # SQLAlchemy (ORM) tutorial: https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 
+models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # Get all activities
-@app.get("/activities")
-def read_all_activities():
-    query = activity.select()
-    query_result = connection.execute(query)
-    activities = [res._asdict() for res in query_result]
+@app.get("/activities", response_model=List[schemas.Activity])
+def read_all_activities(db: Session = Depends(get_db)):
+    activities = crud.get_activities(db)
     return activities
 
 # Get specific activity
